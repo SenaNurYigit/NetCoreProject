@@ -10,24 +10,60 @@ namespace DataAccess.Concrete.InMemory
 {
     public class InMemoryProductDal : IProductDal
     {
+        List<Product> _products;
+        public InMemoryProductDal()
+        {
+            _products= new List<Product> { 
+            new Product{ProductId=1, CategoryId=1, ProductName="Bardak", UnitPrice=15, UnitsInStock=15},
+            new Product{ProductId=2, CategoryId=1, ProductName="Kamera", UnitPrice=500, UnitsInStock=3},
+            new Product{ProductId=3, CategoryId=2, ProductName="Telefon", UnitPrice=1500, UnitsInStock=2},
+            new Product{ProductId=4, CategoryId=2, ProductName="Klavye", UnitPrice=150, UnitsInStock=65},
+            new Product{ProductId=5, CategoryId=2, ProductName="Fare", UnitPrice=85, UnitsInStock=1},
+            };
+        }
         public void Add(Product product)
         {
-            throw new NotImplementedException();
+            _products.Add(product); 
         }
 
         public void Delete(Product product)
         {
-            throw new NotImplementedException();
+            //LINQ Language Integrated Query(Dil ile tümleşik sorgu)
+
+            //Product productToDelete;
+            //foreach (var p in _products)
+            //{
+            //    if(product.ProductId==p.ProductId)
+            //    {
+            //        productToDelete = p;
+            //    }
+            //}
+
+            //Eğer LINQ kullanırsak yukarıda yazdığımız kodu tek satırda halletmiş oluyoruz. Lambda expression ile aslında yukarıdaki foreach döngüsünü hallediyoruz.
+
+           Product productToDelete=_products.SingleOrDefault(p=>p.ProductId==product.ProductId); //Her p için git bak, p'nin ProductId'si benim gönderdiğim product'ın ProductId'sine eşit mi? Eşit olanı productToDelete değişkenine ata.
+           _products.Remove(productToDelete);
         }
 
         public List<Product> GetAll()
         {
-            throw new NotImplementedException();
+            return _products;
+        }
+
+        public List<Product> GetAllByCategory(int categoryId)
+        {
+           return _products.Where(p=>p.CategoryId == categoryId).ToList();  //Where şartı, içindeki şarta uyan tüm elemanları yeni bir liste haline getirip onu döndürür.
         }
 
         public void Update(Product product)
         {
-            throw new NotImplementedException();
+            //Gönderdiğim ürün Id'sine sahip olan listedeki ürünü bul.
+            Product productToUpdate = _products.SingleOrDefault(p => p.ProductId == product.ProductId);
+            productToUpdate.ProductName=product.ProductName;
+            productToUpdate.CategoryId=product.CategoryId;  
+            productToUpdate.ProductName=product.ProductName;
+            productToUpdate.UnitPrice=product.UnitPrice;
+            productToUpdate.UnitsInStock=product.UnitsInStock;
         }
     }
 }
