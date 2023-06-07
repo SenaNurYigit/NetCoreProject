@@ -64,6 +64,6 @@ namespace DataAccess.Concrete.InMemory
             productToUpdate.ProductName=product.ProductName;
             productToUpdate.UnitPrice=product.UnitPrice;
             productToUpdate.UnitsInStock=product.UnitsInStock;
-        }
+        } 
     }
 }
